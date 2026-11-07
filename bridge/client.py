@@ -133,6 +133,8 @@ class Bridge:
 
     def set_constant(self, const, value, kind="string"):
         mode = self.CONST_MODES[kind.lower()]
+        if mode == 1:
+            self.set_representation(const, "dbl")
         if mode == 3:
             value = 1 if str(value).lower() in ("1", "true", "t", "yes") else 0
         n1 = int(value) if mode in (2, 3) else 0
@@ -141,6 +143,22 @@ class Bridge:
     def save(self, vi, path):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.cmd("save", h=[vi], s=[path])
+
+    # LabVIEW Representation enum order
+    REPS = {"ext": 0, "dbl": 1, "sgl": 2, "i32": 3, "i16": 4, "i8": 5, "u32": 6, "u16": 7,
+            "u8": 8, "cxt": 9, "cdb": 10, "csg": 11, "i64": 12, "u64": 13}
+
+    def constant_terminal(self, const):
+        return self.cmd("const_term", h=[const])["h"][0]
+
+    def set_representation(self, const, rep):
+        self.cmd("set_rep", h=[const], n=[0, self.REPS[rep.lower()] if isinstance(rep, str) else int(rep)])
+
+    def set_label(self, control, text):
+        self.cmd("set_label", h=[control], s=[text])
+
+    def make_indicator(self, control):
+        self.cmd("set_ind", h=[control])
 
     def cleanup(self, diagram):
         self.cmd("cleanup", h=[diagram])

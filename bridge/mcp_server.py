@@ -132,6 +132,30 @@ def lv_close(ref: int) -> str:
 
 
 @mcp.tool()
+def lv_constant_terminal(constant: int) -> str:
+    """Get the wireable terminal handle of a block-diagram constant."""
+    return _safe(lambda: json.dumps({"terminal": B().constant_terminal(constant)}))
+
+
+@mcp.tool()
+def lv_set_representation(constant: int, rep: str) -> str:
+    """Set a numeric constant's representation: i8 i16 i32 i64 u8 u16 u32 u64 sgl dbl ext."""
+    return _safe(lambda: (B().set_representation(constant, rep), "ok")[1])
+
+
+@mcp.tool()
+def lv_set_label(control: int, text: str) -> str:
+    """Set a front-panel control/indicator's label text."""
+    return _safe(lambda: (B().set_label(control, text), "ok")[1])
+
+
+@mcp.tool()
+def lv_make_indicator(control: int) -> str:
+    """Change a front-panel control into an indicator."""
+    return _safe(lambda: (B().make_indicator(control), "ok")[1])
+
+
+@mcp.tool()
 def lv_raw(cmd: str, h: list[int] = [], s: list[str] = [], n: list[int] = []) -> str:
     """Send a raw command to LVBridge Server.vi. Returns {h, s, n}."""
     return _safe(lambda: json.dumps(B().cmd(cmd, h, s, n)))
