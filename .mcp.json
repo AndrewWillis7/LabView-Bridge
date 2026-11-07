@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "labview": {
+      "command": "C:\\Users\\Andre\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "args": [
+        "C:\\Users\\Andre\\Documents\\LabVIEW-Bridge\\bridge\\mcp_server.py"
+      ]
+    }
+  }
+}

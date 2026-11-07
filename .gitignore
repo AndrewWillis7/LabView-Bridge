@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+scratch/
+labview/.LVBridge.UserState/
+*.lvlps
+*.aliases
