@@ -418,6 +418,26 @@ class Structure(Node):
     def diagram(self):
         return self.frames[0]
 
+    def new_tunnel(self, fn):
+        """Run fn() (a wire that crosses this structure's border) and return the tunnel it created."""
+        before = {int(t.h) for t in self.tunnels}
+        fn()
+        made = [t for t in self.tunnels if t.h not in before]
+        if len(made) != 1:
+            raise RuntimeError(f"expected 1 new tunnel, got {len(made)}")
+        return made[0]
+
+    def wire_out(self, dst, sources):
+        """One output tunnel to `dst` fed from every frame. sources: {frame name/index/Diagram: source}.
+        Wiring each frame straight to dst would make one tunnel per frame (a broken VI), so the first
+        wire makes the tunnel and the rest wire to its inside terminals."""
+        items = list(sources.items())
+        frame = lambda k: k if isinstance(k, Diagram) else self.frame(k)  # noqa: E731
+        t = self.new_tunnel(lambda: wire(items[0][1], dst))
+        for k, src in items[1:]:
+            wire(src, t.inside(frame(k)))
+        return t
+
     # -- loops --
     def add_shift_register(self, y=40):
         """Add a shift register pair; returns ShiftRegister (left/right terminals in & out)."""

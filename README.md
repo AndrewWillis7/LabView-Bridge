@@ -95,6 +95,9 @@ low-level file I/O, chart with solid/dashed plots, LED, subVI) in about 6 s.
   not a control file. The seed belongs to Actor Framework.lvlib, so `new_ctl` disconnects the copy.
 - Typedef names are global in memory. Reusing a name that's already loaded from another folder (for example
   `State.ctl`) fails with 1061, so give each project's typedefs unique names.
+- Case outputs: wiring each frame straight to the same indicator can make one tunnel per frame (a broken
+  VI). Use `cs.wire_out(indicator, {frame: source, ...})`, which makes one tunnel and feeds it from every
+  frame.
 - Shift registers: `Add Shift Register` returns only the right half. The left terminals are found through the
   loop's outer terminals. A wire between two shift registers routes around a case structure instead of
   making tunnels, so start a tunnel by wiring to a node inside the frame.
