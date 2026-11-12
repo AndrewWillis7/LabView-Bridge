@@ -736,7 +736,11 @@ class VI(Obj):
             owner = self.panel.h
         else:
             owner = where.h if isinstance(where, Obj) else self.diagram.h
-        lab = self.lv.obj(self.lv.b.add_object(owner, "Free Label", int(x), int(y)), "Text")
+        try:
+            h = self.lv.b.add_object(owner, "Free Label", int(x), int(y))
+        except BridgeError:  # the front panel itself can't own a free label (1060) -> use the diagram
+            h = self.lv.b.add_object(self.diagram.h, "Free Label", int(x), int(y))
+        lab = self.lv.obj(h, "Text")
         lab.set("Text", "USER TODO: " + task, "Text")
         self.lv.todo(task, os.path.basename(self.path or "untitled"))
         return lab

@@ -1,9 +1,9 @@
 # Recycling practice test (ENGR 3350)
 
 This is the next benchmark for the bridge. The start files (`Test Start Folder.zip`: `Recycling.lvproj`,
-`Recycle.vi`, `controls/State.ctl`, `controls/Data.ctl`, `controls/actions.ctl`) are **not here yet**.
-Only the transcription of the test from the photos in `spec/` is here, plus a build script for the part
-that doesn't depend on them.
+`Recycle.vi`, `controls/State.ctl`, `controls/Data.ctl`, `controls/actions.ctl`) are **not here yet**,
+so the whole program is built from scratch with its own typedefs. It passes the test's expected-behavior
+check headless (no mouse or keyboard).
 
 ## What's here
 - `spec/page_photo_*.webp`: phone photos of the test pages.
@@ -11,9 +11,25 @@ that doesn't depend on them.
   Until the real start files arrive, it creates a stand-in `controls/actions.ctl` (a cluster of three LEDs:
   Invalid, Bottle, Can).
 
+- `build_recycle.py`: builds `Recycle.vi` (steps 1 and 3–7) in about 6 s:
+  - its own typedefs: `controls/Recycle State.ctl` and `controls/Recycle Data.ctl` (Reset, Delay Time (s),
+    Total ($), Actions);
+  - front panel: combo box, latched Sort/Receipt/Exit buttons, Current Total and Actions lights;
+  - all five states;
+  - file I/O: open before the loop, header in Initialize, one line per Receipt, close and Simple Error
+    Handler after the loop.
+- `check_recycle.py`: runs the test's 5-step check headless. It presses buttons through ActiveX and closes
+  the receipt popup by posting Enter to its window.
+- `TODO_USER.md`: what's left for you (icons).
+
 ```bash
 python Projects/Recycling/build_barcode.py
+python Projects/Recycling/build_recycle.py
+python Projects/Recycling/check_recycle.py
 ```
+
+When the real start files arrive, the same steps apply to the template's `Recycle.vi` and typedefs. The
+script then opens those files instead of creating its own.
 
 ## The task (transcribed)
 An automated bottle/can recycling machine reads a barcode from a combo box. It lights one of three lights,

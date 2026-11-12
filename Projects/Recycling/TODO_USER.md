@@ -2,4 +2,4 @@
 
 The build script could not do these; each is also marked with a 'USER TODO' note in the VI.
 
-- [ ] **Barcode.vi**: draw the icon (right-click icon > Edit Icon)
+- [ ] **untitled**: draw an icon for Barcode.vi (and Recycle.vi if you like)
