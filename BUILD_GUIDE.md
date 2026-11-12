@@ -131,6 +131,30 @@ Put the `style_ring` terminal here. Right-click it » Create » Property Node »
 (if it only offers `Strings[]`, the style list is an enum — use `Strings[]`, wire it to out_s, and skip out_n).
 For Loop over the array → `Unbundle` → String → out_s (auto-index), Value → `To Long Integer` → out_n (auto-index).
 
+### Meta cases (added 2026-11-11 — these let the bridge generate everything else)
+
+Each is a duplicate of an existing case with the refnum constant's class changed
+(right-click constant » Select VI Server Class » …) and the node's item/method re-picked.
+
+**`pclass`** — duplicate `set_ind`; constant class **Generic » GObject » Node » GrowableFunction »
+ObjectFunction » Property**; item **Property Node Class Name** (write) ← **s0**.
+Python passes `"VI Server:<Class>"`, e.g. `"VI Server:CaseStructure"`.
+
+**`pwrite`** — duplicate `set_ind`; constant class **GObject » PropertyItem**; item **Is Write** ← TRUE.
+(h0 = a PropertyItem, obtained through a thunk reading `Property.Property Items[]`.)
+
+**`msel`** — duplicate `set_props`; constant class **… ObjectFunction » Invoke**; method **Set Method**;
+**IDString** ← **s0**, **AllowAlternateNames** ← TRUE. Method IDs come from `Invoke.All Supported Methods`.
+
+**`mkind` / `mkctl` / `mkconst`** — duplicate `ctl_term`; right-click the Property Node » Replace »
+Application Control » **Invoke Node**; constant class **GObject » Terminal » Terminal**; method
+**Create Indicator** / **Create Control** / **Create Constant**. The returned object ref goes through the
+existing Type Cast → Build Array → out_h.
+
+Also set **AllowAlternateNames** = TRUE on the `set_props` Invoke Node.
+
+(`cspec` exists but is unused: it targets GObject's read-only Class Name, not the class specifier's.)
+
 **`Default`** (make the *Default* case)
 Error cluster constant with status = **T**, code = **5000**, source = `LVBridge: unknown command` → error tunnel.
 

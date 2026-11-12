@@ -74,4 +74,20 @@ class VI(_Typed):
         return self.call("GetControlValue", name)
 
     def set_control(self, name, value):
-        self.call("SetControlValue", name, value)
+        self.call("SetControlValue", name, to_variant(value))
+
+
+def to_variant(v):
+    """pywin32 turns nested equal-length sequences into a multi-dimensional SAFEARRAY, but LabVIEW
+    expects arrays of clusters / clusters of arrays as arrays of VARIANT arrays. Wrap explicitly."""
+    if isinstance(v, (list, tuple)) and any(isinstance(x, (list, tuple)) for x in v):
+        return w.VARIANT(pythoncom.VT_ARRAY | pythoncom.VT_VARIANT, [_leaf(x) for x in v])
+    return v
+
+
+def _leaf(x):
+    if isinstance(x, (list, tuple)):
+        if any(isinstance(y, (list, tuple)) for y in x):
+            return to_variant(x)
+        return w.VARIANT(pythoncom.VT_ARRAY | pythoncom.VT_VARIANT, list(x))
+    return x

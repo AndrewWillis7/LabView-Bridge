@@ -161,6 +161,104 @@ def lv_raw(cmd: str, h: list[int] = [], s: list[str] = [], n: list[int] = []) ->
     return _safe(lambda: json.dumps(B().cmd(cmd, h, s, n)))
 
 
+# ---------------- text pipeline (lvapi + generated thunks) ----------------
+_lv = None
+_ns = None
+
+
+def LVS():
+    global _lv
+    pythoncom.CoInitialize()
+    if _lv is None:
+        import lvapi
+        _lv = lvapi.LV(B())
+    return _lv
+
+
+def _namespace():
+    global _ns
+    if _ns is None:
+        import lvapi
+        _ns = {"lv": LVS(), "wire": lvapi.wire, "set_constant": lvapi.set_constant,
+               "set_node_label": lvapi.set_node_label, "REPS": lvapi.REPS, "lvapi": lvapi}
+    return _ns
+
+
+@mcp.tool()
+def lv_exec(code: str) -> str:
+    """Run a Python build script against LabVIEW in a persistent session (variables survive between
+    calls). Preloaded: lv (session), wire(a, b), set_constant(c, v, rep), REPS.
+    API: vi = lv.new_vi() / lv.open_vi(path); vi.control(style, label, x, y); vi.indicator(...);
+    vi.ctl(label); vi.controls(); d = vi.diagram; d.add(style, x, y); d.subvi(path); d.const(value);
+    d.nodes(); d.find(label=..., cls=...); node["term name"|index] -> Terminal; wire(src, dst)
+    (Controls/constants wire directly); any object: o["Property"], o["Property"] = v,
+    o.call("Method", Param=value); Structure: s.frames, s.frame(name), s.names, s.add_frame(name);
+    vi.save(path). print() output and the value of a variable named `result` are returned."""
+    import contextlib
+    import io
+    import traceback
+    ns = _namespace()
+    ns.pop("result", None)
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            exec(compile(code, "<lv_exec>", "exec"), ns)
+    except Exception:  # noqa: BLE001
+        return buf.getvalue() + "\nERROR:\n" + traceback.format_exc(limit=4)
+    out = buf.getvalue()
+    if "result" in ns:
+        out += ("\n" if out else "") + "result = " + repr(ns["result"])
+    return out or "ok"
+
+
+@mcp.tool()
+def lv_props(cls: str, query: str = "") -> str:
+    """List properties of a VI Server class (name, r/w), filtered by substring. Use with o["Name"]."""
+    return _safe(lambda: json.dumps(LVS().props(cls, query)[:200]))
+
+
+@mcp.tool()
+def lv_methods(cls: str, query: str = "") -> str:
+    """List methods of a VI Server class (discovered from LabVIEW, cached)."""
+    return _safe(lambda: json.dumps(LVS().methods(cls, query)))
+
+
+@mcp.tool()
+def lv_args(cls: str, method: str) -> str:
+    """Show a method's input/output parameter names (generates its thunk)."""
+    return _safe(lambda: json.dumps(LVS().args(cls, method)))
+
+
+@mcp.tool()
+def lv_get(handle: int, prop: str, cls: str = "") -> str:
+    """Read any property of any object handle (class auto-detected if omitted)."""
+    def go():
+        lv = LVS()
+        return json.dumps(lv.t.get(handle, cls or lv.class_of(handle), prop), default=str)
+    return _safe(go)
+
+
+@mcp.tool()
+def lv_set(handle: int, prop: str, value: str, cls: str = "") -> str:
+    """Write any property. value is JSON (e.g. 5, "text", [10, 20], true)."""
+    def go():
+        lv = LVS()
+        v = json.loads(value)
+        v = tuple(v) if isinstance(v, list) else v
+        lv.t.set(handle, cls or lv.class_of(handle), prop, v)
+        return "ok"
+    return _safe(go)
+
+
+@mcp.tool()
+def lv_call(handle: int, method: str, args: dict = {}, cls: str = "") -> str:
+    """Invoke any VI Server method on a handle. args: {param name: value}. Returns outputs."""
+    def go():
+        lv = LVS()
+        return json.dumps(lv.t.call(handle, cls or lv.class_of(handle), method, **args), default=str)
+    return _safe(go)
+
+
 @mcp.tool()
 def lv_view(vi_path: str, which: str = "diagram"):
     """Render a SAVED VI and return images. which: diagram | panel | all."""

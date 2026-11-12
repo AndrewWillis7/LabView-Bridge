@@ -38,6 +38,11 @@ class Bridge:
             raise BridgeError(f"Server VI not found: {self.server_path}. Build it per BUILD_GUIDE.md.")
         if self.server is None:
             self.server = self.lv.vi(self.server_path)
+            # never reuse a seq the server already acknowledged (another process may have used it)
+            try:
+                self.seq = max(self.seq, int(self.server.get_control("ack") or 0) + 1000)
+            except Exception:
+                pass
         state = self.server.get("ExecState")
         if state not in (2, 3):  # 2 = Run top level, 3 = Running (subVI)
             self.server.set_control("stop", False)
@@ -50,7 +55,7 @@ class Bridge:
             self.server.set_control("stop", True)
 
     # ---------- raw command ----------
-    def cmd(self, cmd, h=(), s=(), n=()):
+    def cmd(self, cmd, h=(), s=(), n=(), allow_error=False):
         srv = self.ensure_server()
         self.seq += 1
         srv.set_control("h", [int(x) for x in h] or [0])
@@ -70,6 +75,9 @@ class Bridge:
             "n": [int(x) for x in (srv.get_control("out_n") or ())],
         }
         if err.strip():
+            if allow_error:
+                out["err"] = err.strip()
+                return out
             raise BridgeError(f"{cmd}: {err.strip()}")
         return out
 
@@ -79,7 +87,13 @@ class Bridge:
         return {"vi": h[0], "diagram": h[1], "panel": h[2]}
 
     def open_vi(self, path):
-        h = self.cmd("open_vi", s=[path])["h"]
+        out = self.cmd("open_vi", s=[path], allow_error=True)
+        h = out["h"] + [0, 0, 0]
+        if out.get("err"):
+            # .ctl/.vit etc. have no block diagram (error 1035); the VI ref itself is still valid
+            if "1035" not in out["err"] or not h[0]:
+                raise BridgeError(f"open_vi: {out['err']}")
+            return {"vi": h[0], "diagram": 0, "panel": 0}
         return {"vi": h[0], "diagram": h[1], "panel": h[2]}
 
     def styles(self, refresh=False):

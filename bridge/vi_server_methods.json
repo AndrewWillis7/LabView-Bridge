@@ -1,0 +1,1183 @@
+{
+ "CaseStructure": [
+  {
+   "id": "6327405",
+   "name": "Class Operator:Call",
+   "short": "Class Operator.Call"
+  },
+  {
+   "id": "6327406",
+   "name": "Class Operator:Traverse",
+   "short": "Class Operator.Traverse"
+  },
+  {
+   "id": "6327400",
+   "name": "Delete",
+   "short": "Delete"
+  },
+  {
+   "id": "6327403",
+   "name": "Tag:Get Tag",
+   "short": "Tag.Get Tag"
+  },
+  {
+   "id": "6327402",
+   "name": "Tag:Remove Tag",
+   "short": "Tag.Remove Tag"
+  },
+  {
+   "id": "6327401",
+   "name": "Tag:Set Tag",
+   "short": "Tag.Set Tag"
+  },
+  {
+   "id": "6327404",
+   "name": "Tag:Set Tag Persistence",
+   "short": "Tag.Set Tag Persistence"
+  },
+  {
+   "id": "632a407",
+   "name": "Get Help Info",
+   "short": "GetObjHelp"
+  },
+  {
+   "id": "632a400",
+   "name": "Move",
+   "short": "Move"
+  },
+  {
+   "id": "632a401",
+   "name": "Object Highlight",
+   "short": "ObjHighlight"
+  },
+  {
+   "id": "632a402",
+   "name": "Replace",
+   "short": "Replace"
+  },
+  {
+   "id": "632a403",
+   "name": "Replace No Attributes",
+   "short": "Replace No Attrib"
+  },
+  {
+   "id": "6358c00",
+   "name": "Connect Wires",
+   "short": "Connect Wires"
+  },
+  {
+   "id": "6358c01",
+   "name": "Get Image",
+   "short": "Get Image"
+  },
+  {
+   "id": "6360400",
+   "name": "Auto Size",
+   "short": "Auto Size"
+  },
+  {
+   "id": "6360401",
+   "name": "Remove Structure",
+   "short": "Remove Structure"
+  },
+  {
+   "id": "6360403",
+   "name": "Shared Clones:Allocate as Needed",
+   "short": "AllocSharedClonesAsNeeded"
+  },
+  {
+   "id": "6360402",
+   "name": "Shared Clones:Pre-Allocate",
+   "short": "PreAllocSharedClones"
+  },
+  {
+   "id": "6363400",
+   "name": "Add Frame",
+   "short": "Add Frame"
+  },
+  {
+   "id": "6363402",
+   "name": "Duplicate Frame",
+   "short": "Duplicate Frame"
+  },
+  {
+   "id": "6363404",
+   "name": "Rearrange Frames",
+   "short": "RearrangeFrames"
+  },
+  {
+   "id": "6363403",
+   "name": "Rearrange Frames By Index",
+   "short": "RearrangeFramesByIdx"
+  },
+  {
+   "id": "6363401",
+   "name": "Remove Frame",
+   "short": "Remove Frame"
+  },
+  {
+   "id": "6364c04",
+   "name": "Get Frame Index",
+   "short": "GetFrameIndex"
+  },
+  {
+   "id": "6364c03",
+   "name": "Remove Default",
+   "short": "RemoveDefault"
+  },
+  {
+   "id": "6364c00",
+   "name": "Remove Empty Cases",
+   "short": "Remove Empty Cases"
+  },
+  {
+   "id": "6364c02",
+   "name": "Set Default Case",
+   "short": "SetDefaultCase"
+  }
+ ],
+ "Control": [
+  {
+   "id": "6327405",
+   "name": "Class Operator:Call",
+   "short": "Class Operator.Call"
+  },
+  {
+   "id": "6327406",
+   "name": "Class Operator:Traverse",
+   "short": "Class Operator.Traverse"
+  },
+  {
+   "id": "6327400",
+   "name": "Delete",
+   "short": "Delete"
+  },
+  {
+   "id": "6327403",
+   "name": "Tag:Get Tag",
+   "short": "Tag.Get Tag"
+  },
+  {
+   "id": "6327402",
+   "name": "Tag:Remove Tag",
+   "short": "Tag.Remove Tag"
+  },
+  {
+   "id": "6327401",
+   "name": "Tag:Set Tag",
+   "short": "Tag.Set Tag"
+  },
+  {
+   "id": "6327404",
+   "name": "Tag:Set Tag Persistence",
+   "short": "Tag.Set Tag Persistence"
+  },
+  {
+   "id": "632a407",
+   "name": "Get Help Info",
+   "short": "GetObjHelp"
+  },
+  {
+   "id": "632a400",
+   "name": "Move",
+   "short": "Move"
+  },
+  {
+   "id": "632a401",
+   "name": "Object Highlight",
+   "short": "ObjHighlight"
+  },
+  {
+   "id": "632a402",
+   "name": "Replace",
+   "short": "Replace"
+  },
+  {
+   "id": "632a403",
+   "name": "Replace No Attributes",
+   "short": "Replace No Attrib"
+  },
+  {
+   "id": "6331c06",
+   "name": "Attach DataSocket",
+   "short": "AttachDataSocket"
+  },
+  {
+   "id": "6331c01",
+   "name": "Create:Control Reference",
+   "short": "Create.Control Ref"
+  },
+  {
+   "id": "6331c04",
+   "name": "Create:Invoke Node",
+   "short": "Create.Invoke Node"
+  },
+  {
+   "id": "6331c02",
+   "name": "Create:Local Variable",
+   "short": "Create.Local Var"
+  },
+  {
+   "id": "6331c03",
+   "name": "Create:Property Node",
+   "short": "Create.Property Node"
+  },
+  {
+   "id": "6331c0f",
+   "name": "Data Binding:Bind To Network Path",
+   "short": "DataBinding.Bind To Network Path"
+  },
+  {
+   "id": "6331c12",
+   "name": "Data Binding:Unbind",
+   "short": "DataBinding.Unbind"
+  },
+  {
+   "id": "6331c14",
+   "name": "Data Operations:Copy Data",
+   "short": "DataOp.CopyData"
+  },
+  {
+   "id": "6331c15",
+   "name": "Data Operations:Paste Data",
+   "short": "DataOp.PasteData"
+  },
+  {
+   "id": "6331c09",
+   "name": "Disconnect From Typedef",
+   "short": "Disconnect From Typedef"
+  },
+  {
+   "id": "6331c13",
+   "name": "Fit Control To Pane",
+   "short": "FitControlToPane"
+  },
+  {
+   "id": "6331c0c",
+   "name": "Get Image",
+   "short": "Get Image"
+  },
+  {
+   "id": "6331c0d",
+   "name": "Get Terminal Image",
+   "short": "Get Term Image"
+  },
+  {
+   "id": "6331c00",
+   "name": "Reinitialize To Default",
+   "short": "Reinit To Default"
+  },
+  {
+   "id": "6331c07",
+   "name": "Remove DataSocket",
+   "short": "Remove DataSocket"
+  },
+  {
+   "id": "6331c0e",
+   "name": "Start Drag",
+   "short": "Start Drag"
+  },
+  {
+   "id": "6331c0a",
+   "name": "Update From Typedef",
+   "short": "Update Typedef"
+  }
+ ],
+ "Diagram": [
+  {
+   "id": "6327405",
+   "name": "Class Operator:Call",
+   "short": "Class Operator.Call"
+  },
+  {
+   "id": "6327406",
+   "name": "Class Operator:Traverse",
+   "short": "Class Operator.Traverse"
+  },
+  {
+   "id": "6327400",
+   "name": "Delete",
+   "short": "Delete"
+  },
+  {
+   "id": "6327403",
+   "name": "Tag:Get Tag",
+   "short": "Tag.Get Tag"
+  },
+  {
+   "id": "6327402",
+   "name": "Tag:Remove Tag",
+   "short": "Tag.Remove Tag"
+  },
+  {
+   "id": "6327401",
+   "name": "Tag:Set Tag",
+   "short": "Tag.Set Tag"
+  },
+  {
+   "id": "6327404",
+   "name": "Tag:Set Tag Persistence",
+   "short": "Tag.Set Tag Persistence"
+  },
+  {
+   "id": "632a407",
+   "name": "Get Help Info",
+   "short": "GetObjHelp"
+  },
+  {
+   "id": "632a400",
+   "name": "Move",
+   "short": "Move"
+  },
+  {
+   "id": "632a401",
+   "name": "Object Highlight",
+   "short": "ObjHighlight"
+  },
+  {
+   "id": "632a402",
+   "name": "Replace",
+   "short": "Replace"
+  },
+  {
+   "id": "632a403",
+   "name": "Replace No Attributes",
+   "short": "Replace No Attrib"
+  },
+  {
+   "id": "6375402",
+   "name": "Make Space",
+   "short": "MakeSpace"
+  },
+  {
+   "id": "6375400",
+   "name": "Paste",
+   "short": "Paste"
+  },
+  {
+   "id": "6375409",
+   "name": "Remove Wire Loose Ends",
+   "short": "RemWireLooseEnds"
+  },
+  {
+   "id": "6375401",
+   "name": "Select All",
+   "short": "Select All"
+  },
+  {
+   "id": "6375403",
+   "name": "Shrink Wrap Structures",
+   "short": "Shrink Wrap Structs"
+  },
+  {
+   "id": "6d17c801",
+   "name": "Clean Up Diagram",
+   "short": "CleanUp"
+  },
+  {
+   "id": "6d17c804",
+   "name": "Create from Data Type",
+   "short": "Create from Data Type"
+  },
+  {
+   "id": "6d17c802",
+   "name": "Default Diagram Clean Up Options",
+   "short": "CleanUpOptions"
+  }
+ ],
+ "EventStructure": [
+  {
+   "id": "6327405",
+   "name": "Class Operator:Call",
+   "short": "Class Operator.Call"
+  },
+  {
+   "id": "6327406",
+   "name": "Class Operator:Traverse",
+   "short": "Class Operator.Traverse"
+  },
+  {
+   "id": "6327400",
+   "name": "Delete",
+   "short": "Delete"
+  },
+  {
+   "id": "6327403",
+   "name": "Tag:Get Tag",
+   "short": "Tag.Get Tag"
+  },
+  {
+   "id": "6327402",
+   "name": "Tag:Remove Tag",
+   "short": "Tag.Remove Tag"
+  },
+  {
+   "id": "6327401",
+   "name": "Tag:Set Tag",
+   "short": "Tag.Set Tag"
+  },
+  {
+   "id": "6327404",
+   "name": "Tag:Set Tag Persistence",
+   "short": "Tag.Set Tag Persistence"
+  },
+  {
+   "id": "632a407",
+   "name": "Get Help Info",
+   "short": "GetObjHelp"
+  },
+  {
+   "id": "632a400",
+   "name": "Move",
+   "short": "Move"
+  },
+  {
+   "id": "632a401",
+   "name": "Object Highlight",
+   "short": "ObjHighlight"
+  },
+  {
+   "id": "632a402",
+   "name": "Replace",
+   "short": "Replace"
+  },
+  {
+   "id": "632a403",
+   "name": "Replace No Attributes",
+   "short": "Replace No Attrib"
+  },
+  {
+   "id": "6358c00",
+   "name": "Connect Wires",
+   "short": "Connect Wires"
+  },
+  {
+   "id": "6358c01",
+   "name": "Get Image",
+   "short": "Get Image"
+  },
+  {
+   "id": "6360400",
+   "name": "Auto Size",
+   "short": "Auto Size"
+  },
+  {
+   "id": "6360401",
+   "name": "Remove Structure",
+   "short": "Remove Structure"
+  },
+  {
+   "id": "6360403",
+   "name": "Shared Clones:Allocate as Needed",
+   "short": "AllocSharedClonesAsNeeded"
+  },
+  {
+   "id": "6360402",
+   "name": "Shared Clones:Pre-Allocate",
+   "short": "PreAllocSharedClones"
+  },
+  {
+   "id": "6363400",
+   "name": "Add Frame",
+   "short": "Add Frame"
+  },
+  {
+   "id": "6363402",
+   "name": "Duplicate Frame",
+   "short": "Duplicate Frame"
+  },
+  {
+   "id": "6363404",
+   "name": "Rearrange Frames",
+   "short": "RearrangeFrames"
+  },
+  {
+   "id": "6363403",
+   "name": "Rearrange Frames By Index",
+   "short": "RearrangeFramesByIdx"
+  },
+  {
+   "id": "6363401",
+   "name": "Remove Frame",
+   "short": "Remove Frame"
+  },
+  {
+   "id": "5191800",
+   "name": "Get Event Data Node",
+   "short": "GetEventDataNode"
+  },
+  {
+   "id": "5191801",
+   "name": "Get Event Filter Node",
+   "short": "GetEventFilterNode"
+  },
+  {
+   "id": "5191802",
+   "name": "Get Handled Events",
+   "short": "GetHandledEvents"
+  },
+  {
+   "id": "5191803",
+   "name": "Set Handled Events",
+   "short": "SetHandledEvents"
+  }
+ ],
+ "GObject": [
+  {
+   "id": "6327405",
+   "name": "Class Operator:Call",
+   "short": "Class Operator.Call"
+  },
+  {
+   "id": "6327406",
+   "name": "Class Operator:Traverse",
+   "short": "Class Operator.Traverse"
+  },
+  {
+   "id": "6327400",
+   "name": "Delete",
+   "short": "Delete"
+  },
+  {
+   "id": "6327403",
+   "name": "Tag:Get Tag",
+   "short": "Tag.Get Tag"
+  },
+  {
+   "id": "6327402",
+   "name": "Tag:Remove Tag",
+   "short": "Tag.Remove Tag"
+  },
+  {
+   "id": "6327401",
+   "name": "Tag:Set Tag",
+   "short": "Tag.Set Tag"
+  },
+  {
+   "id": "6327404",
+   "name": "Tag:Set Tag Persistence",
+   "short": "Tag.Set Tag Persistence"
+  },
+  {
+   "id": "632a407",
+   "name": "Get Help Info",
+   "short": "GetObjHelp"
+  },
+  {
+   "id": "632a400",
+   "name": "Move",
+   "short": "Move"
+  },
+  {
+   "id": "632a401",
+   "name": "Object Highlight",
+   "short": "ObjHighlight"
+  },
+  {
+   "id": "632a402",
+   "name": "Replace",
+   "short": "Replace"
+  },
+  {
+   "id": "632a403",
+   "name": "Replace No Attributes",
+   "short": "Replace No Attrib"
+  }
+ ],
+ "Terminal": [
+  {
+   "id": "6327405",
+   "name": "Class Operator:Call",
+   "short": "Class Operator.Call"
+  },
+  {
+   "id": "6327406",
+   "name": "Class Operator:Traverse",
+   "short": "Class Operator.Traverse"
+  },
+  {
+   "id": "6327400",
+   "name": "Delete",
+   "short": "Delete"
+  },
+  {
+   "id": "6327403",
+   "name": "Tag:Get Tag",
+   "short": "Tag.Get Tag"
+  },
+  {
+   "id": "6327402",
+   "name": "Tag:Remove Tag",
+   "short": "Tag.Remove Tag"
+  },
+  {
+   "id": "6327401",
+   "name": "Tag:Set Tag",
+   "short": "Tag.Set Tag"
+  },
+  {
+   "id": "6327404",
+   "name": "Tag:Set Tag Persistence",
+   "short": "Tag.Set Tag Persistence"
+  },
+  {
+   "id": "632a407",
+   "name": "Get Help Info",
+   "short": "GetObjHelp"
+  },
+  {
+   "id": "632a400",
+   "name": "Move",
+   "short": "Move"
+  },
+  {
+   "id": "632a401",
+   "name": "Object Highlight",
+   "short": "ObjHighlight"
+  },
+  {
+   "id": "632a402",
+   "name": "Replace",
+   "short": "Replace"
+  },
+  {
+   "id": "632a403",
+   "name": "Replace No Attributes",
+   "short": "Replace No Attrib"
+  },
+  {
+   "id": "6349c03",
+   "name": "Connect Wire",
+   "short": "Connect Wire"
+  },
+  {
+   "id": "6349c00",
+   "name": "Create Constant",
+   "short": "Create Constant"
+  },
+  {
+   "id": "6349c01",
+   "name": "Create Control",
+   "short": "Create Control"
+  },
+  {
+   "id": "6349c04",
+   "name": "Create Described Wire",
+   "short": "Create Described Wire"
+  },
+  {
+   "id": "6349c02",
+   "name": "Create Indicator",
+   "short": "Create Indicator"
+  },
+  {
+   "id": "6349c05",
+   "name": "Create Shared Variable Node",
+   "short": "Create Shared Variable Node"
+  }
+ ],
+ "VI": [
+  {
+   "id": "3ec",
+   "name": "Abort VI",
+   "short": "Abort VI"
+  },
+  {
+   "id": "43c",
+   "name": "Adapt Nodes",
+   "short": "Adapt Nodes"
+  },
+  {
+   "id": "474",
+   "name": "Block Diagram:Clean Up",
+   "short": "BD.CleanUp"
+  },
+  {
+   "id": "42c",
+   "name": "Block Diagram:Get Image Scaled",
+   "short": "BD.Get Image Scaled"
+  },
+  {
+   "id": "410",
+   "name": "Block Diagram:Remove Bad Wires",
+   "short": "BD.Remove Bad Wires"
+  },
+  {
+   "id": "419",
+   "name": "Clear History",
+   "short": "Clear History"
+  },
+  {
+   "id": "466",
+   "name": "Compile:VI",
+   "short": "Compile"
+  },
+  {
+   "id": "4b0",
+   "name": "Configure Panel As Top-Level Hidden",
+   "short": "Configure Panel As Hidden"
+  },
+  {
+   "id": "41c",
+   "name": "Control Value:Get",
+   "short": "Ctrl Val.Get"
+  },
+  {
+   "id": "41d",
+   "name": "Control Value:Get All",
+   "short": "Ctrl Val.Get All"
+  },
+  {
+   "id": "41b",
+   "name": "Control Value:Set",
+   "short": "Ctrl Val.Set"
+  },
+  {
+   "id": "457",
+   "name": "Control VI Apply Changes",
+   "short": "CtlVIApplyChanges"
+  },
+  {
+   "id": "49d",
+   "name": "Create from Data Type",
+   "short": "Create from Data Type"
+  },
+  {
+   "id": "443",
+   "name": "Create from Reference",
+   "short": "Create from Reference"
+  },
+  {
+   "id": "484",
+   "name": "Debugging:Get Debug Button Display State",
+   "short": "Debugging:GetButtonState"
+  },
+  {
+   "id": "481",
+   "name": "Debugging:Step Into",
+   "short": "Debugging:StepInto"
+  },
+  {
+   "id": "483",
+   "name": "Debugging:Step Out",
+   "short": "Debugging:StepOut"
+  },
+  {
+   "id": "482",
+   "name": "Debugging:Step Over",
+   "short": "Debugging:StepOver"
+  },
+  {
+   "id": "3f3",
+   "name": "Default Values:Make Current Default",
+   "short": "Default Vals.Make Curr Default"
+  },
+  {
+   "id": "3f4",
+   "name": "Default Values:Reinitialize All To Default",
+   "short": "Default Vals.Reinit All"
+  },
+  {
+   "id": "479",
+   "name": "Detect Parallel Loops",
+   "short": "Detect Parallel Loops"
+  },
+  {
+   "id": "44b",
+   "name": "Disconnect From Library",
+   "short": "DisconnectFromLibrary"
+  },
+  {
+   "id": "401",
+   "name": "Empty",
+   "short": "Empty"
+  },
+  {
+   "id": "4b8",
+   "name": "Enable UTF-8 Encoding",
+   "short": "EnableUTF8Encoding"
+  },
+  {
+   "id": "464",
+   "name": "Find Control with Key Focus",
+   "short": "FindCtrlWithKeyFocus"
+  },
+  {
+   "id": "441",
+   "name": "Front Panel:Center",
+   "short": "FP.Center"
+  },
+  {
+   "id": "425",
+   "name": "Front Panel:Close",
+   "short": "FP.Close"
+  },
+  {
+   "id": "423",
+   "name": "Front Panel:Get Image",
+   "short": "FP.Get Image"
+  },
+  {
+   "id": "426",
+   "name": "Front Panel:Get Image Scaled",
+   "short": "FP.Get Image Scaled"
+  },
+  {
+   "id": "438",
+   "name": "Front Panel:Open",
+   "short": "FP.Open"
+  },
+  {
+   "id": "447",
+   "name": "Front Panel:Run-Time Position:Centered",
+   "short": "FP.Run-Time Position.Centered"
+  },
+  {
+   "id": "44a",
+   "name": "Front Panel:Run-Time Position:Custom",
+   "short": "FP.Run-Time Position.Custom"
+  },
+  {
+   "id": "445",
+   "name": "Front Panel:Run-Time Position:Get Position",
+   "short": "FP.Run-Time Pos.Get"
+  },
+  {
+   "id": "448",
+   "name": "Front Panel:Run-Time Position:Maximized",
+   "short": "FP.Run-Time Position.Maximized"
+  },
+  {
+   "id": "449",
+   "name": "Front Panel:Run-Time Position:Minimized",
+   "short": "FP.Run-Time Position.Minimized"
+  },
+  {
+   "id": "446",
+   "name": "Front Panel:Run-Time Position:Unchanged",
+   "short": "FP.Run-Time Pos.Unchanged"
+  },
+  {
+   "id": "495",
+   "name": "Get Compile Metrics",
+   "short": "GetCompileMetrics"
+  },
+  {
+   "id": "42d",
+   "name": "Get Conpane Image",
+   "short": "Get Conpane Image"
+  },
+  {
+   "id": "4a7",
+   "name": "Get Control Index by Name",
+   "short": "GetControlIndexByName"
+  },
+  {
+   "id": "49b",
+   "name": "Get Library Access Scope",
+   "short": "Get Library Access Scope"
+  },
+  {
+   "id": "4a9",
+   "name": "Get ObjectRef From BookmarkID",
+   "short": "GetObjRefFromBkmrkID"
+  },
+  {
+   "id": "4a8",
+   "name": "Get VI Bookmarks",
+   "short": "GetVIBookmarks"
+  },
+  {
+   "id": "47a",
+   "name": "Get VI Dependencies (Names and Paths)",
+   "short": "Get VI Dependencies"
+  },
+  {
+   "id": "3fd",
+   "name": "Lock State:Get",
+   "short": "Lock State.Get"
+  },
+  {
+   "id": "3fe",
+   "name": "Lock State:Set",
+   "short": "Lock State.Set"
+  },
+  {
+   "id": "460",
+   "name": "Move Objects",
+   "short": "MoveObjects"
+  },
+  {
+   "id": "480",
+   "name": "Pause VI",
+   "short": "PauseVI"
+  },
+  {
+   "id": "4a2",
+   "name": "Populate Asynchronous Call Pool",
+   "short": "Populate Async Call Pool"
+  },
+  {
+   "id": "415",
+   "name": "Print:Panel To PostScript",
+   "short": "Print.Panel To PostScript"
+  },
+  {
+   "id": "3fb",
+   "name": "Print:Panel To Printer",
+   "short": "Print.Panel To Printer"
+  },
+  {
+   "id": "3ee",
+   "name": "Print:VI To HTML",
+   "short": "Print.VI To HTML"
+  },
+  {
+   "id": "3ed",
+   "name": "Print:VI To Printer",
+   "short": "Print.VI To Printer"
+  },
+  {
+   "id": "3ef",
+   "name": "Print:VI To RTF",
+   "short": "Print.VI To RTF"
+  },
+  {
+   "id": "3f0",
+   "name": "Print:VI To Text",
+   "short": "Print.VI To Text"
+  },
+  {
+   "id": "430",
+   "name": "Remote Panel:Client Connections",
+   "short": "RP.Client Connections"
+  },
+  {
+   "id": "431",
+   "name": "Remote Panel:Close Connection To Client",
+   "short": "RP.Close Connection To Client"
+  },
+  {
+   "id": "42e",
+   "name": "Remote Panel:Lock Control",
+   "short": "RP.Lock Control"
+  },
+  {
+   "id": "42f",
+   "name": "Remote Panel:Unlock Control",
+   "short": "RP.Unlock Control"
+  },
+  {
+   "id": "44d",
+   "name": "Replicate Conpane",
+   "short": "Replicate Conpane"
+  },
+  {
+   "id": "3fa",
+   "name": "Revert VI",
+   "short": "Revert VI"
+  },
+  {
+   "id": "3eb",
+   "name": "Run VI",
+   "short": "Run VI"
+  },
+  {
+   "id": "400",
+   "name": "Save:For Previous",
+   "short": "Save.For Previous"
+  },
+  {
+   "id": "3ea",
+   "name": "Save:Instrument",
+   "short": "Save.Instrument"
+  },
+  {
+   "id": "413",
+   "name": "Save:Run-Time Menu",
+   "short": "Save.Run-Time Menu"
+  },
+  {
+   "id": "4b7",
+   "name": "Set Retain Wire Value At VI Hierarchy",
+   "short": "SetRetainWireValueAtVIHierarchy"
+  },
+  {
+   "id": "402",
+   "name": "Transaction:Begin Undo",
+   "short": "Transaction.Begin Undo"
+  },
+  {
+   "id": "403",
+   "name": "Transaction:End Undo",
+   "short": "Transaction.End Undo"
+  },
+  {
+   "id": "42a",
+   "name": "Transaction:Fail",
+   "short": "Transaction.Fail"
+  },
+  {
+   "id": "490",
+   "name": "Transaction:Get Redo State",
+   "short": "Get Redo State"
+  },
+  {
+   "id": "489",
+   "name": "Transaction:Get Undo State",
+   "short": "Get Undo State"
+  },
+  {
+   "id": "429",
+   "name": "Transaction:Redo",
+   "short": "Transaction.Redo"
+  },
+  {
+   "id": "428",
+   "name": "Transaction:Undo",
+   "short": "Transaction.Undo"
+  },
+  {
+   "id": "421",
+   "name": "VI Icon:Get As Image Data",
+   "short": "VI Icon.Get as Image Data"
+  },
+  {
+   "id": "418",
+   "name": "VI Icon:Save To File",
+   "short": "VI Icon.Save to File"
+  },
+  {
+   "id": "407",
+   "name": "VI Icon:Set From File",
+   "short": "VI Icon.Set from File"
+  },
+  {
+   "id": "422",
+   "name": "VI Icon:Set From Image Data",
+   "short": "VI Icon.Set from Image Data"
+  },
+  {
+   "id": "3e8",
+   "name": "VI Strings:Export",
+   "short": "VI Strings.Export"
+  },
+  {
+   "id": "4ba",
+   "name": "VI Strings:Export XLIFF",
+   "short": "VI Strings.Export XLIFF"
+  },
+  {
+   "id": "3e9",
+   "name": "VI Strings:Import",
+   "short": "VI Strings.Import"
+  },
+  {
+   "id": "4bb",
+   "name": "VI Strings:Import XLIFF",
+   "short": "VI Strings.Import XLIFF"
+  }
+ ],
+ "Wire": [
+  {
+   "id": "6327405",
+   "name": "Class Operator:Call",
+   "short": "Class Operator.Call"
+  },
+  {
+   "id": "6327406",
+   "name": "Class Operator:Traverse",
+   "short": "Class Operator.Traverse"
+  },
+  {
+   "id": "6327400",
+   "name": "Delete",
+   "short": "Delete"
+  },
+  {
+   "id": "6327403",
+   "name": "Tag:Get Tag",
+   "short": "Tag.Get Tag"
+  },
+  {
+   "id": "6327402",
+   "name": "Tag:Remove Tag",
+   "short": "Tag.Remove Tag"
+  },
+  {
+   "id": "6327401",
+   "name": "Tag:Set Tag",
+   "short": "Tag.Set Tag"
+  },
+  {
+   "id": "6327404",
+   "name": "Tag:Set Tag Persistence",
+   "short": "Tag.Set Tag Persistence"
+  },
+  {
+   "id": "632a407",
+   "name": "Get Help Info",
+   "short": "GetObjHelp"
+  },
+  {
+   "id": "632a400",
+   "name": "Move",
+   "short": "Move"
+  },
+  {
+   "id": "632a401",
+   "name": "Object Highlight",
+   "short": "ObjHighlight"
+  },
+  {
+   "id": "632a402",
+   "name": "Replace",
+   "short": "Replace"
+  },
+  {
+   "id": "632a403",
+   "name": "Replace No Attributes",
+   "short": "Replace No Attrib"
+  },
+  {
+   "id": "6370c00",
+   "name": "Attach Probe",
+   "short": "AttachProbe"
+  },
+  {
+   "id": "6370c05",
+   "name": "Clean Up Wire",
+   "short": "CleanUpWire"
+  },
+  {
+   "id": "6370c07",
+   "name": "Copy Probes To Companion",
+   "short": "CopyProbesToCompanion"
+  },
+  {
+   "id": "6370c0b",
+   "name": "Delete Joint",
+   "short": "DeleteJoint"
+  },
+  {
+   "id": "6370c0d",
+   "name": "Disconnect Terminal",
+   "short": "DisconnectTerminal"
+  },
+  {
+   "id": "6370c06",
+   "name": "Insert Node",
+   "short": "Insert Node"
+  },
+  {
+   "id": "6370c08",
+   "name": "Remove Loose Ends",
+   "short": "RemoveLooseEnds"
+  },
+  {
+   "id": "6370c01",
+   "name": "Remove Probe",
+   "short": "Remove Probe"
+  }
+ ]
+}

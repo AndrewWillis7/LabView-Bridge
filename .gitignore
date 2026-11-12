@@ -4,3 +4,5 @@ scratch/
 labview/.LVBridge.UserState/
 *.lvlps
 *.aliases
+labview/thunks/
+Projects/*/vibration data.txt
