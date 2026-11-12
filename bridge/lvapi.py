@@ -34,7 +34,7 @@ STYLE_ALIASES = {
     # short names -> New VI Object style names
     "numeric": "Numeric Control (modern)", "numeric control": "Numeric Control (modern)",
     "numeric indicator": "Numeric Indicator (modern)",
-    "case": "Case Structure", "event": "Event Structure", "while": "While Loop", "for": "For Loop",
+    "case": "Case Structure", "event": "Event Structure", "while": "While Loop #1", "while loop": "While Loop #1", "for": "For Loop",
     "waveform chart": "Waveform Chart (modern)", "waveform graph": "Waveform Graph (modern)",
     "round led": "Round LED (modern)", "square led": "Square LED (modern)", "led": "Round LED (modern)",
     "string control": "String Control (modern)", "string indicator": "String Indicator (modern)",
@@ -59,6 +59,32 @@ class LV:
         if not h["panel"]:
             h["panel"] = self.t.get(h["vi"], "VI", "Front Panel")
         return VI(self, h["vi"], h["diagram"], h["panel"], path)
+
+    CTL_KIND = {"control": 0, "typedef": 1, "strict": 2}
+    _CTL_SEED = os.path.join("vi.lib", "ActorFramework", "Message Dequeuer", "Dequeue Priority.ctl")
+
+    def new_ctl(self, path, style, label=None, kind="typedef"):
+        """Create a new .ctl file holding one control of `style` (kind: control | typedef | strict).
+        Saving a new VI with a .ctl name gives a VI, not a control file, so this copies a tiny
+        vi.lib .ctl as a seed, swaps its control and saves under the new name."""
+        import shutil
+        path = os.path.abspath(path)
+        if os.path.exists(path):
+            raise FileExistsError(path)
+        shutil.copy(os.path.join(self.b.lv.app.get("ApplicationDirectory"), self._CTL_SEED), path)
+        t = self.open_vi(path)
+        try:  # the seed is a member of Actor Framework.lvlib; the copy must not be
+            t.call("Disconnect From Library")
+        except ThunkError:
+            pass
+        old = t.controls()
+        c = t._place(style, label, 0, 0, None)
+        for o in old:
+            o.delete()
+        t.set("Control VI Type", self.CTL_KIND.get(kind, kind), "VI")
+        t.save()
+        t.root = c
+        return t
 
     def obj(self, h, cls=None):
         """Wrap a raw handle in the most useful Python class (detects VI Server class)."""
@@ -96,8 +122,7 @@ class LV:
         if base == "Node":
             # anything that has a Terminals[] property behaves like a node
             try:
-                self.t.cat.prop(cls, "Terminals[]")
-                return True
+                return self.t.cat.prop(cls, "Terminals[]")["long"] == "Terminals[]"
             except ThunkError:
                 return False
         if base == "Control":
@@ -107,6 +132,45 @@ class LV:
             except ThunkError:
                 return False
         return False
+
+    _express = None
+
+    def express_path(self, name):
+        """Path of the Express VI instance file for a palette name ("Elapsed Time")."""
+        if self._express is None:
+            root = os.path.join(self.b.lv.app.get("ApplicationDirectory"), "vi.lib", "express")
+            self._express = {}
+            for dp, _dn, fn in os.walk(root):
+                for f in fn:
+                    if f.startswith("Ex_Inst_") and f.endswith(".vi"):
+                        self._express[_norm(f[8:-3])] = os.path.join(dp, f)
+        key = _norm(name)
+        if key in self._express:
+            return self._express[key]
+        hits = [v for k, v in self._express.items() if key in k]
+        if len(hits) == 1:
+            return hits[0]
+        raise KeyError(f"no Express VI {name!r}; candidates: {sorted(self._express)[:40]}")
+
+    # -- user hand-off notes --
+    todos = None
+
+    def todo(self, task, where=""):
+        """Record a step the bridge can't script (VI.todo also drops a note in the VI)."""
+        self.todos = self.todos or []
+        self.todos.append((where, task))
+
+    def flush_todos(self, folder):
+        """Write TODO_USER.md (checklist of manual steps) into folder; returns its path or None."""
+        if not self.todos:
+            return None
+        path = os.path.join(folder, "TODO_USER.md")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("# Manual steps left for you\n\nThe build script could not do these; "
+                    "each is also marked with a 'USER TODO' note in the VI.\n\n")
+            for where, task in self.todos:
+                f.write(f"- [ ] **{where}**: {task}\n" if where else f"- [ ] {task}\n")
+        return path
 
     # -- discovery helpers (for the model / MCP) --
     def props(self, cls, query=""):
@@ -354,6 +418,20 @@ class Structure(Node):
     def diagram(self):
         return self.frames[0]
 
+    # -- loops --
+    def add_shift_register(self, y=40):
+        """Add a shift register pair; returns ShiftRegister (left/right terminals in & out)."""
+        h = self.call("Add Shift Register", **{"Y Position": int(y)})["Add Shift Register"]
+        return ShiftRegister(self.lv, h, self)
+
+    @property
+    def stop_terminal(self):
+        """Conditional terminal of a While Loop (wire a Boolean here)."""
+        return Terminal(self.lv, self.get("Loop End Ref", "WhileLoop"), "Terminal")
+
+    def resize(self, w, h):
+        self.set("Frame Size", (int(w), int(h)), "WhileLoop" if self.cls == "WhileLoop" else self.cls)
+
     @property
     def tunnels(self):
         return [Tunnel(self.lv, t, self.lv.class_of(t)) for t in self.get("Tunnels[]", "Structure")]
@@ -389,6 +467,41 @@ class Tunnel(Obj):
         return Terminal(self.lv, self.get("Outside Terminal", "Tunnel"), "Terminal")
 
 
+class ShiftRegister(Obj):
+    """Shift register pair. LabVIEW only returns the right half, so the left terminals are found by
+    position on the loop. init: outside-left input; read: inside-left (this iteration's value);
+    write: inside-right input (next iteration); final: outside-right output."""
+    def __init__(self, lv, right_h, loop):
+        super().__init__(lv, right_h, "RightShiftRegister")
+        self.loop = loop
+
+    def _y(self):
+        return self.get("Outside Terminal", "RightShiftRegister") and             Terminal(self.lv, self.get("Outside Terminal", "RightShiftRegister"), "Terminal").pos[1]
+
+    @property
+    def write(self):
+        return Terminal(self.lv, self.get("Inside Terminals[]", "RightShiftRegister")[0], "Terminal")
+
+    @property
+    def final(self):
+        return Terminal(self.lv, self.get("Outside Terminal", "RightShiftRegister"), "Terminal")
+
+    @property
+    def init(self):
+        y, x0 = self._y(), self.loop.pos[0]
+        for t in self.loop.get("Terminals[]", "Node"):
+            T = Terminal(self.lv, t, "Terminal")
+            p = T.pos
+            if abs(p[1] - y) <= 2 and p[0] <= x0 + 2 and not T.is_source:
+                return T
+        raise KeyError("left shift register (outside) not found")
+
+    @property
+    def read(self):
+        left = self.init.get("Owner", "GObject")  # LeftShiftRegister
+        return Terminal(self.lv, self.lv.t.get(left, "LeftShiftRegister", "Inside Terminals[]")[0], "Terminal")
+
+
 class Control(Obj):
     @property
     def label(self):
@@ -410,6 +523,54 @@ class Control(Obj):
     def indicator(self, v):
         self.set("Indicator", bool(v), "Control")
 
+    # -- clusters (front panel or inside a .ctl) --
+    def children(self):
+        """Elements of a cluster control, in cluster order."""
+        return [self.wrap(h) for h in self.get("Controls[]", "Cluster")]
+
+    def child(self, label):
+        for c in self.children():
+            if c.label == label:
+                return c
+        raise KeyError(f"no element {label!r}; have {[c.label for c in self.children()]}")
+
+    def add(self, style_or_path, label=None):
+        """Add an element to this cluster: a style name, or a path to a .ctl (typedef instance)."""
+        if str(style_or_path).lower().endswith((".ctl", ".vi")):
+            h = self.lv.b.add_subvi(self.h, os.path.abspath(style_or_path), 0, 0)
+        else:
+            h = self.lv.b.add_object(self.h, STYLE_ALIASES.get(str(style_or_path).lower(), style_or_path), 0, 0)
+        c = self.wrap(h)
+        if label:
+            c.label = label
+        self.arrange()
+        return c
+
+    def arrange(self, vertical=True):
+        """Cluster Auto Sizing: 3 = arrange vertically, 2 = horizontally."""
+        self.set("Auto Sizing", 3 if vertical else 2, "Cluster")
+
+    # -- common control settings --
+    MECH = {"switch when pressed": 0, "switch when released": 1, "switch until released": 2,
+            "latch when pressed": 3, "latch when released": 4, "latch until released": 5}
+
+    @property
+    def mechanical_action(self):
+        return self.get("Mechanical Action", "Boolean")
+
+    @mechanical_action.setter
+    def mechanical_action(self, v):
+        self.set("Mechanical Action", self.MECH.get(str(v).lower(), v), "Boolean")
+
+    @property
+    def items(self):
+        """Enum item strings."""
+        return list(self.get("Strings []", "Enum"))
+
+    @items.setter
+    def items(self, names):
+        self.set("Strings []", tuple(names), "Enum")
+
 
 class Diagram(Obj):
     def add(self, style, x=100, y=100, label=None):
@@ -421,6 +582,17 @@ class Diagram(Obj):
 
     def subvi(self, path, x=100, y=100):
         return self.wrap(self.lv.b.add_subvi(self.h, os.path.abspath(path), int(x), int(y)))
+
+    def express(self, name, x=100, y=100):
+        """Express VI by palette name, e.g. "Elapsed Time", "Time Delay" (default configuration).
+        Placing vi.lib/express/**/Ex_Inst_<name>.vi by path yields a real Express VI node."""
+        return self.subvi(self.lv.express_path(name), x, y)
+
+    def note(self, text, x=20, y=20):
+        """Free label (comment) on this diagram."""
+        lab = self.wrap(self.lv.b.add_object(self.h, "Free Label", int(x), int(y)), "Text")
+        lab.set("Text", text, "Text")
+        return lab
 
     def const(self, value, x=100, y=100, rep=None):
         """Typed constant: bool, int (I32), float (DBL), str, or (list) -> array via Value."""
@@ -499,6 +671,55 @@ class VI(Obj):
         if str(style).lower() == "numeric":
             style = "Numeric Indicator (modern)"
         return self._place(style, label, x, y, True)
+
+    def typedef_const(self, ctl_path, where=None, value=None, x=50, y=50):
+        """Constant of a typedef (.ctl) on the diagram or inside `where` (a frame Diagram).
+        A .ctl can't be dropped on a diagram directly, so: panel instance -> Create Constant -> delete.
+        `value` is the whole value, e.g. (False, True, False) for a cluster of 3 booleans."""
+        ctl = self.lv.obj(self.lv.b.add_subvi(self.panel.h, os.path.abspath(ctl_path), 0, 0))
+        c = ctl.term.constant()
+        ctl.delete()
+        if where is not None and int(where) != self.diagram.h:
+            c.call("Move", cls="GObject", position=(int(x), int(y)), owner=int(where))
+        else:
+            c.pos = (x, y)
+        if value is not None:
+            c.set("Value", value, "Constant")
+        return c
+
+    # -- connector pane --
+    def connector(self, left=(), right=(), pattern=4815):
+        """Wire the connector pane. left/right: controls (or labels) top-to-bottom; None skips a slot.
+        Default pattern 4815 = 4x2x2x4 (4 terminals on each side)."""
+        cp = Obj(self.lv, self.get("Connector Pane:Reference", "VI"), "ConnectorPane")
+        if pattern is not None and cp["Pattern"] != pattern:
+            cp["Pattern"] = pattern
+        b = cp["Terminal Bounds[]"]  # (left, top, right, bottom) per terminal
+        w = max(r[2] for r in b)
+        cols = {"left": sorted((i for i, r in enumerate(b) if r[0] == 0), key=lambda i: b[i][1]),
+                "right": sorted((i for i, r in enumerate(b) if r[2] == w), key=lambda i: b[i][1])}
+        for side, items in (("left", left), ("right", right)):
+            if len(items) > len(cols[side]):
+                raise ValueError(f"pattern {pattern} has only {len(cols[side])} {side} terminals")
+            for idx, c in zip(cols[side], items):
+                if c is None:
+                    continue
+                c = self.ctl(c) if isinstance(c, str) else c
+                cp.call("Assign Control To Terminal", Control=c.h, TermIdx=idx)
+        return cp
+
+    # -- hand-off --
+    def todo(self, task, where="diagram", x=20, y=20):
+        """Leave a step for the user: a 'USER TODO' free label on the diagram (or panel, or a given
+        subdiagram) plus an entry in lv.todos (write it out with lv.flush_todos(folder))."""
+        if where == "panel" or not self.diagram:
+            owner = self.panel.h
+        else:
+            owner = where.h if isinstance(where, Obj) else self.diagram.h
+        lab = self.lv.obj(self.lv.b.add_object(owner, "Free Label", int(x), int(y)), "Text")
+        lab.set("Text", "USER TODO: " + task, "Text")
+        self.lv.todo(task, os.path.basename(self.path or "untitled"))
+        return lab
 
     def save(self, path=None):
         path = os.path.abspath(path or self.path)

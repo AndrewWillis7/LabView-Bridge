@@ -33,6 +33,28 @@ wire(cs.tunnel_at("left", 120).inside(f), w.inp("file"))   # terminals by name
 vi.save()
 ```
 
+More building blocks (tested in `tests/gap_test.py`, which builds and runs a barcode subVI in about 2 s):
+
+```python
+t = lv.open_vi("controls/State.ctl"); t.controls()[0].items = ["Init", "Read", "Exit"]; t.save()
+cl = lv.open_vi("controls/Data.ctl").controls()[0]
+cl.add("Push Button", "Reset"); cl.add("controls/actions.ctl", "Actions")   # typedef inside a cluster
+vi.ctl("Sort").mechanical_action = "latch when released"
+vi.connector(left=[barcode], right=[actions, delay, value])                # 4x2x2x4, top to bottom
+el = frame_diagram.express("Elapsed Time", 50, 50)                          # real Express VI node
+c = vi.typedef_const("controls/actions.ctl", where=frame, value=(False, True, False))
+vi.todo("draw the icon")        # 'USER TODO:' note in the VI + lv.flush_todos(folder) -> TODO_USER.md
+t = lv.new_ctl("controls/Color.ctl", "Enum (modern)", "Color"); t.root.items = [...]; t.save()  # new typedef
+loop = vi.diagram.add("while", 160, 40); loop.resize(760, 380)
+sr = loop.add_shift_register(80)   # sr.init / sr.read / sr.write / sr.final ; loop.stop_terminal
+```
+
+If the bridge can't do a step, the build script calls `vi.todo(...)` instead of failing. The step is
+then left as a visible note in the VI and as an entry in a `TODO_USER.md` checklist.
+
+From-scratch example: `Projects/Rainbow/build_rainbow.py` builds a rainbow state machine (two typedefs,
+a while loop with shift registers, 4 states, latched Next/Stop buttons) in about 2 s with no template.
+
 Benchmark: `Projects/Disturb Project/build_disturb.py` turns the NI Simple State Machine template into
 the full ENGR 3350 "Disturb" practice-test solution (event structure with 50 ms timeout, 6 states,
 low-level file I/O, chart with solid/dashed plots, LED, subVI) in about 6 s.
@@ -61,3 +83,18 @@ low-level file I/O, chart with solid/dashed plots, LED, subVI) in about 6 s.
   matches by owning diagram. Linked tunnels auto-wire pass-throughs into new frames.
 - `Terminal.unwire()` deletes the whole wire net in that diagram, so unwire before branching.
 - Refs opened *inside* a thunk close when it finishes, so VIs are opened by the long-running server.
+- A `.ctl` can't be dropped on a diagram (error 1060), so `typedef_const` places a panel instance,
+  creates a constant from it, deletes the control, then calls `Move` into the target frame.
+- LabVIEW links typedefs by name in memory: two `State.ctl` files from different folders resolve to
+  whichever one was loaded first.
+- Connector `Terminal Bounds[]` entries are (left, top, right, bottom). `connector()` picks the left and
+  right columns from these bounds, so it doesn't depend on terminal index order.
+- Run-checks work headless: `SetControlValue` on a latched button does press it, so a script can run a VI,
+  click buttons and read indicators. Modal dialogs (One Button Dialog) still need a person to close them.
+- `lv.new_ctl` copies a small vi.lib `.ctl` as a seed, because saving a new VI with a `.ctl` name gives a VI,
+  not a control file. The seed belongs to Actor Framework.lvlib, so `new_ctl` disconnects the copy.
+- Typedef names are global in memory. Reusing a name that's already loaded from another folder (for example
+  `State.ctl`) fails with 1061, so give each project's typedefs unique names.
+- Shift registers: `Add Shift Register` returns only the right half. The left terminals are found through the
+  loop's outer terminals. A wire between two shift registers routes around a case structure instead of
+  making tunnels, so start a tunnel by wiring to a node inside the frame.
